@@ -21,6 +21,7 @@ maintainers = [
     {name = "Mathics3 Group", email = "mathics-devel@googlegroups.com"},
 ]
 classifiers = [
+    "Development Status :: 3 - Alpha",
     "Intended Audience :: Developers",
     "Intended Audience :: Science/Research",
     "Programming Language :: Python",
@@ -34,20 +35,26 @@ classifiers = [
     "Topic :: Scientific/Engineering :: Physics",
     "Topic :: Software Development :: Interpreters",
 ]
+readme = "README.md"
 
 dynamic = ["version"]
 
 [project.optional-dependencies]
 dev = [
-    "jupyter-console",
-    "check-jsonschema",
-    "pytest",
-    "pre-commit",
+    "check-jsonschema", # Github workflows checking
+    "jupyter-console", # Jupyter Console debugging
+    "mypy", # type checking
+    "pre-commit", # Checking at commit time
+    "pytest", # testing
+    "ruff",  # Linting/formatting
+    "twine", # For publishing
 ]
 
 [project.urls]
 Homepage = "https://mathics.org/"
+Changelog = "https://github.com/Mathics3/Mathics3-Frontend-jupyter/blob/master/NEWS.md"
 Downloads = "https://github.com/Mathics3/Mathics3-notebook-jupyter/releases"
+Repository = "https://github.com/Mathics3/Mathics3-notebook-jupyter"
 
 [project.scripts]
 install-mathics3-jupyter-kernel = "mathics3_jupyter_kernel.install_kernel:main"

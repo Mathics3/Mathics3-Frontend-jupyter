@@ -2,6 +2,8 @@
 /*.ipynb
 /.ipynb_checkpoints
 /.python-version
+/ChangeLog
+/ChangeLog-spell-corrected
 /build
 /dist
 /mathics3_jupyter_kernel.egg-info
