@@ -65,5 +65,12 @@ ignore_missing_imports = true
 [tool.setuptools.dynamic]
 version = {attr = "mathics3_jupyter_kernel.version.__version__"}
 
+[tool.setuptools.package-data]
+mathics3_jupyter_kernel = ["../examples/*.ipynb"]
+
+[tool.setuptools.data-files]
+# This ensures examples are included in source distributions
+"." = ["examples/*.ipynb"]
+
 [tool.setuptools.packages.find]
 include = ["mathics3_jupyter_kernel"]

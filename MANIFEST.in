@@ -1,0 +1,5 @@
+recursive-include examples *.ipynb
+include README.md
+include NEWS.md
+include LICENSE
+recursive-include mathics3_jupyter_kernel *.py

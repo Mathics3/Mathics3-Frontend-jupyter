@@ -32,7 +32,7 @@ register-kernel:
 generate-config:
 	jupyter server --generate-config
 
-#: Make distirbution: wheels and tarball
+#: Make distribution: wheels and tarball
 dist:
 	./admin-tools/make-dist.sh
 
