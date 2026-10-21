@@ -30,7 +30,7 @@ $ pip install -e .
 Register the Mathics3 kernel for Jupyter via the JSON file `mathics3-jupyter/kernel.json`.
 
 ```console
-$ python3 -m mathics3_jupyter_kernel.install
+$ python3 -m mathics3_jupyter_kernel.install_kernel
 ```
 
 This needs to be done only once.
@@ -39,15 +39,32 @@ To see that this has been installed, run:
 
 ```console
 $ jupyter kernelspec list
+
+Available kernels:
+  ...
+  mathics3-kernel                 /home/rocky/.local/share/jupyter/kernels/mathics3-kernel
+  ...
 ```
 
+Run a Jupyter notebook:
+
+```
+$ jupyter notebook # --notebook-dir=...
+...
+    To access the server, open this file in a browser:
+        file:/home/rocky/.local/share/jupyter/runtime/jpserver-XXXXX-open.html
+    Or copy and paste one of these URLs:
+        http://localhost:8888/tree?token=XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+        http://127.0.0.1:8888/tree?token=XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+
+```
+
+Or inside Jupyter, you can als
 
 ```
 %load_ext mathics3_kernel.frontend.jupyter
 ```
 
-Usage is as simple as executing the above code in a notebook cell,
-and then Mathics3 code can be directly run in all subsequent cells.
 Here is a [sample notebook](examples/jupyter-notebook.ipynb)
 that can be used with a local Jupyter installation.
 

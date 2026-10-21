@@ -10,6 +10,7 @@ build-backend = "setuptools.build_meta"
 description = "Jupyter Notebook integration for Mathics3"
 dependencies = [
     "mathics3_notebook_frontends >= 1.0.0",
+    "jupyter",
     "jupyter_client",
     "jupyterlab",
     "Mathics3-pygments",
