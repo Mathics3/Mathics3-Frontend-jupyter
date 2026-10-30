@@ -59,7 +59,11 @@ class Mathics3Kernel(Kernel):
         self.python_namespace = {}
         self.html_formatter = HtmlFormatter(style="default", noclasses=True)
 
-        # Inject custom CSS for left-aligned math output
+        self.input_label = "In[]:="
+        self.output_label = "Out[]:="
+        self.cell_index = 0
+
+        # Inject custom CSS for left-aligned math output and prompt styling
         display(
             HTML(
                 """
@@ -125,13 +129,13 @@ class Mathics3Kernel(Kernel):
                     if (this.value === "python") {
                         var cell = Jupyter.notebook.get_selected_cell();
 
-                        # Convert to standard code cell under the hood so Jupyter doesn't crash
+                        // Convert to standard code cell under the hood so Jupyter doesn't crash
                         cell.change_to_code();
 
-                        # Set a custom metadata flag so the UI remembers this is a Python cell
+                        // Set a custom metadata flag so the UI remembers this is a Python cell
                         cell.metadata.custom_lang = "python";
 
-                        # Change visual styling or add a watermark placeholder if desired
+                        // Change visual styling or add a watermark placeholder if desired
                         if (!cell.get_text().startsWith("%python")) {
                             cell.set_text("%python\\n" + cell.get_text());
                         }
@@ -152,11 +156,50 @@ class Mathics3Kernel(Kernel):
                 }
             }
 
+            // Force cell prompts to show red In[n]:= and Out[n]= formats
+            function stylePrompts() {
+                // Style input prompt containers
+                const inputPrompts = document.querySelectorAll('.jp-InputPrompt, div.input_prompt');
+                inputPrompts.forEach(el => {
+                    el.style.color = 'red';
+                    let text = el.textContent.trim();
+                    let match = text.match(/\\d+/);
+                    if (match) {
+                        el.innerHTML = 'In[' + match[0] + ']:=';
+                    } else {
+                        el.innerHTML = 'In[]:=';
+                    }
+                });
+
+                // Style output prompt containers
+                const outputPrompts = document.querySelectorAll('.jp-OutputPrompt, div.output_prompt, div.out_prompt_overlay');
+                outputPrompts.forEach(el => {
+                    el.style.color = 'green';
+                    let text = el.textContent.trim();
+                    let match = text.match(/\\d+/);
+                    if (match) {
+                        el.innerHTML = 'Out[' + match[0] + ']=';
+                    } else {
+                        el.innerHTML = 'Out[]=';
+                    }
+                });
+            }
+
+            function initMathicsUI() {
+                setupPythonDropdown();
+                stylePrompts();
+
+                const observer = new MutationObserver(() => {
+                    stylePrompts();
+                });
+                observer.observe(document.body, { childList: true, subtree: true, characterData: true });
+            }
+
             // Run setup once DOM and Jupyter objects are fully active
             if (document.readyState === "complete") {
-                setupPythonDropdown();
+                initMathicsUI();
             } else {
-                window.addEventListener("load", setupPythonDropdown);
+                window.addEventListener("load", initMathicsUI);
             }
             """
             )
