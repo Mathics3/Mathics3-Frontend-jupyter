@@ -32,10 +32,10 @@ class Mathics3Kernel(Kernel):
     language_version = __version__
 
     # banner is used in "jupyter console"
-    banner = f"Mathics3a {__version__} Kernel ({implementation_version})- A Mathematica-compatible engine"
+    banner = f"Mathics3b {__version__} Kernel ({implementation_version})- A Mathematica-compatible engine"
 
     help_links: Final[list[dict]] = [
-        {"text": "Mathics3a", "url": "https://mathics.org/"},
+        {"text": "Mathics3b", "url": "https://mathics.org/"},
         {
             "text": "Mathics3-notebook-jupyter GitHub",
             "url": "https://github.com/Mathics3/Mathics3-notebook-jupyter",
@@ -320,7 +320,7 @@ class Mathics3Kernel(Kernel):
                 self.send_response(
                     self.iopub_socket,
                     "stream",
-                    {"name": "stderr", "text": f"Error running pip: {str(e)}\n"},
+                    {"name": "stderr", "text": f"Error running pip: {e!s}\n"},
                 )
                 success = True
         return success
