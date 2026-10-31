@@ -7,18 +7,19 @@ import pprint
 import re
 import subprocess
 import sys
+from io import StringIO
+from typing import Final
 
 from ipykernel.kernelbase import Kernel
 from IPython.display import HTML, Javascript, display
-from io import StringIO
 from mathics import __version__
 from mathics.core.load_builtin import import_and_load_builtins
 from mathics.session import MathicsSession
-from mathics3_jupyter_kernel import __version__ as kernel_version
 from pygments import highlight
-from pygments.lexers import PythonLexer
 from pygments.formatters import HtmlFormatter
+from pygments.lexers import PythonLexer
 
+from mathics3_jupyter_kernel import __version__ as kernel_version
 from mathics3_jupyter_kernel.formatter import format_output
 
 import_and_load_builtins()
@@ -31,16 +32,16 @@ class Mathics3Kernel(Kernel):
     language_version = __version__
 
     # banner is used in "jupyter console"
-    banner = f"Mathics3 {__version__} Kernel ({implementation_version})- A Mathematica-compatible engine"
+    banner = f"Mathics3a {__version__} Kernel ({implementation_version})- A Mathematica-compatible engine"
 
-    help_links = [
-        {"text": "Mathics3", "url": "https://mathics.org/"},
+    help_links: Final[list[dict]] = [
+        {"text": "Mathics3a", "url": "https://mathics.org/"},
         {
             "text": "Mathics3-notebook-jupyter GitHub",
             "url": "https://github.com/Mathics3/Mathics3-notebook-jupyter",
         },
     ]
-    language_info = {
+    language_info: Final[list[dict]] = {
         "name": "mathematica",
         "mimetype": "text/x-mathematica",
         "file_extension": ".wl",
@@ -82,14 +83,14 @@ class Mathics3Kernel(Kernel):
                 /* Force the custom green branding for the Mathics3 logo container */
                 .jp-Mathics3Logo svg,
                 [data-icon="mathics3:logo"] svg {
-                  fill: #34a853 !important; /* Replace with your specific Mathics3 green hex */
+                  fill: "red" !important; /* Replace with your specific Mathics3 green hex */
                 }
 
                 /* Ensure paths inside the SVG don't fall back to standard theme fills */
                 .jp-Mathics3Logo g path,
                 [data-icon="mathics3:logo"] path {
                   fill: currentcolor;
-                  color: #34a853 !important;
+                  color: "#34a853" !important;
                 }
                 </style>
                 """
@@ -271,7 +272,7 @@ class Mathics3Kernel(Kernel):
                     "stream",
                     {
                         "name": "stderr",
-                        "text": f"Error rendering HTML: {type(e).__name__}: {str(e)}\n",
+                        "text": f"Error rendering HTML: {type(e).__name__}: {e!s}\n",
                     },
                 )
                 return True
@@ -359,7 +360,6 @@ class Mathics3Kernel(Kernel):
                     eval_ast = parsed_ast
 
                 else:
-
                     # Check if the last statement in the block is an expression.
                     last_node = parsed_ast.body[-1]
 
@@ -414,7 +414,7 @@ class Mathics3Kernel(Kernel):
                     "stream",
                     {
                         "name": "stderr",
-                        "text": f"Error execution Python magic: {type(e).__name__}: {str(e)}\n",
+                        "text": f"Error execution Python magic: {type(e).__name__}: {e!s}\n",
                     },
                 )
                 return True
@@ -433,11 +433,11 @@ class Mathics3Kernel(Kernel):
     def do_execute(
         self,
         code: str,
-        silent,
+        silent: bool,
         store_history=True,
-        user_expressions=None,
+        user_expressions: dict | None = None,
         allow_stdin=True,
-    ):
+    ) -> dict:
         """
         This method is hooked in by the IPKernelApp.launch_instance(kernel_class=Mathics3Kernel) call from __main__.py.
 
